@@ -32,7 +32,7 @@ df = pd.read_csv("https://raw.githubusercontent.com/owid/covid-19-data/master/pu
 df_continent = df['location'].value_counts().keys()
 df_continent
 df_Ind = df[df['location'] == 'India']
-print(df_Ind[:5])
+#print(df_Ind[:5])
 layout = html.Div([html.Br(),
     dcc.Tabs([
         dcc.Tab(label='Global',style=tab_style, children=[
