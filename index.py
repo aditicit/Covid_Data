@@ -12,7 +12,7 @@ from app import app
 from apps import app3, app1, app2
 
 PATH = pathlib.Path(__file__).parent
-DATA_PATH = PATH.joinpath("../datasets").resolve()
+DATA_PATH = PATH.joinpath("./datasets").resolve()
 df = pd.read_csv(DATA_PATH.joinpath("covidreport.csv"))
 
 
