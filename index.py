@@ -12,7 +12,7 @@ from app import app
 from apps import app3, app1, app2
 
 PATH = pathlib.Path(__file__).parent
-DATA_PATH = PATH.joinpath("../Covid/datasets").resolve()
+DATA_PATH = PATH.joinpath("../datasets").resolve()
 df = pd.read_csv(DATA_PATH.joinpath("covidreport.csv"))
 
 
@@ -35,7 +35,7 @@ app.layout = html.Div([
 
     dcc.Location(id='url', refresh=False),
     html.Div((
-        dbc.NavLink("Home ", href='/', active=True),
+        dbc.NavLink(" Home ", href='/', active=True),
         dbc.NavLink('World Covid Cases ', href='/apps/app1'),
         dbc.NavLink('India Covid Cases ', href='/apps/app2'),
         dbc.NavLink('Vaccination', href='/apps/app3')

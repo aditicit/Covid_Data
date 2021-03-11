@@ -48,8 +48,6 @@ for t in df_rss['Description']:
     description.append(t)
 
 
-df2_rest = pd.read_csv("https://s3.amazonaws.com/rawstore.datahub.io/9dc095afacc22888e66192aa23e71314.csv")
-
 # App layout
 
 layout = html.Div([
@@ -57,7 +55,7 @@ layout = html.Div([
     html.H6("Continent-wise Covid cases", style={'text-align': 'center'}),
 
     html.Br(),
-    html.Marquee(description, dir='rtl',title='Feed Elements',className='text-monospace mb-1'),
+    html.Marquee(description, dir='rtl',loop='loop',title='Feed Elements',className='text-monospace mb-1'),
     html.Br(),
     html.Div([
         html.Div([
