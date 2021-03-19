@@ -1,4 +1,5 @@
 import pathlib
+import updatecsv
 
 import dash_core_components as dcc
 import dash_bootstrap_components as dbc
@@ -69,4 +70,5 @@ def display_page(pathname):
 
 
 if __name__ == '__main__':
+    updatecsv.update_csv_file()
     app.run_server(debug=True)
