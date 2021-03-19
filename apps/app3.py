@@ -6,7 +6,8 @@ import plotly.graph_objects as go
 import dash  # (version 1.12.0) pip install dash
 import dash_core_components as dcc
 import dash_html_components as html
-
+from dash.dependencies import Input, Output
+from app import app
 tabs_styles = {
     'height': '44px'
 }
@@ -24,8 +25,6 @@ tab_selected_style = {
     'padding': '6px'
 }
 
-#external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css',]
-#app = dash.Dash(__name__, external_stylesheets=[dbc.themes.CYBORG])
 
 df = pd.read_csv("https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/vaccinations/vaccinations.csv")
 
@@ -36,18 +35,47 @@ df_Ind = df[df['location'] == 'India']
 layout = html.Div([html.Br(),
     dcc.Tabs([
         dcc.Tab(label='Global',style=tab_style, children=[
-            html.H6('Daily Vaccination update in world', style={"textAlign": "center"}),
+            html.H6('Covid Vaccine update in world', style={"textAlign": "center"}),
+        dcc.Dropdown(
+            id="ticker1",
+            options=[{"label": x, "value": x}
+                     for x in df.columns[[3,7]]],
+                               value = df.columns[3],
+                                        clearable=False,
+            style={"width": "40%"}
+        ),
             dcc.Graph(
-                figure=px.line(df, x="date", y="daily_vaccinations", color="location"),
+                id='vaccination-chart_1'
             )
         ], selected_style=tab_selected_style),
 
         dcc.Tab(label='India', children=[
-            html.H6('Daily Vaccination update in India', style={"textAlign": "center"}),
+            html.H6('Covid Vaccine update in India', style={"textAlign": "center"}),
+        dcc.Dropdown(
+            id="ticker2",
+            options=[{"label": x, "value": x}
+                     for x in df_Ind.columns[[3,7]]],
+            value=df_Ind.columns[3],
+            clearable=False,
+            style={"width": "40%"}
+        ),
             dcc.Graph(
-                figure=px.area(df_Ind, x="date", y="daily_vaccinations", color="location", line_group="location"),
+                id='vaccination-chart_2'
 
             )
         ], style=tab_style, selected_style=tab_selected_style ,className="container"),
     ],style=tabs_styles)
 ])
+
+@app.callback(Output('vaccination-chart_1', 'figure'),
+              Output('vaccination-chart_2', 'figure'),
+     [Input('ticker1', 'value'),
+      Input('ticker2', 'value')])
+
+def update_graph(ticker1,ticker2):
+    fig1 = px.area(df, x='date', y=ticker1, title='Date tracking with Rangeslider',color='location')
+    fig2 = px.area(df_Ind, x='date', y=ticker2, title='Date tracking with Rangeslider')
+    fig1.update_xaxes(rangeslider_visible=True)
+    fig2.update_xaxes(rangeslider_visible=True)
+
+    return fig1,fig2

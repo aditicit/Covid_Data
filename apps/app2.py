@@ -13,8 +13,9 @@ from dash.dependencies import Input, Output
 
 from app import app
 
-df1 = pd.read_csv("https://s3.amazonaws.com/rawstore.datahub.io/f6f2ac7be65b7d271b8a3b74df3ad724.csv")
-df_Ind = df1[df1['Country'] == 'India']
+
+df1 = pd.read_csv("https://raw.githubusercontent.com/datasets/covid-19/main/data/time-series-19-covid-combined.csv")
+df_Ind = df1[df1['Country/Region'] == 'India']
 
 # ------------------------------------------------------------------------------
 # App layout
@@ -26,8 +27,8 @@ layout = html.Div([
         dcc.Dropdown(
             id="ticker",
             options=[{"label": x, "value": x}
-                     for x in df_Ind.columns[2:]],
-            value=df_Ind.columns[3],
+                     for x in df_Ind.columns[3:]],
+            value=df_Ind.columns[4],
             clearable=False,
             style={"width": "40%"}
         ),
@@ -40,7 +41,7 @@ layout = html.Div([
      [Input('ticker', 'value')])
 
 def update_graph(ticker):
-    fig = px.line(df_Ind, x='Date', y=ticker, title='Date tracking with Rangeslider')
+    fig = px.area(df_Ind, x='Date', y=ticker, title='Date tracking with Rangeslider',line_group='Country/Region')
     fig.update_xaxes(rangeslider_visible=True)
 
     return fig
